@@ -4,9 +4,10 @@ class Article {
   final String createdAt;
   final String color;
   final int stock;
-  final String price;
-  final String id;
-  final bool visibility;
+  final int price;
+  final int id;
+  final String? image;
+  final String? model;
 
   const Article(
       {required this.name,
@@ -16,17 +17,19 @@ class Article {
       required this.color,
       required this.stock,
       required this.createdAt,
-      required this.visibility});
+      required this.image,
+      required this.model});
 
   factory Article.fromJson(Map<String, dynamic> json) {
     return Article(
         name: json['name'],
-        createdAt: json['createdAt'],
-        price: json["details"]['price'],
+        createdAt: json['createAt'],
+        price: json['price'],
         id: json['id'],
-        description: json["details"]['description'],
-        color: json["details"]['color'],
+        description: json['description'],
+        color: json['color'],
         stock: json['stock'],
-        visibility: false);
+        image: json['image'],
+        model: json['modelRA']);
   }
 }
