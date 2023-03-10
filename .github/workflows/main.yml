@@ -1,6 +1,6 @@
 name: Tests sur PR de la branche dev
 
-on:
+'on':
   push:
     branches:
       - workflowsDev
