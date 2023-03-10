@@ -3,7 +3,7 @@ name: Tests sur PR de la branche dev
 on:
   push:
     branches:
-      - workflows
+      - workflowsDev
     types: [opened, reopened, synchronize]
 
 jobs:
