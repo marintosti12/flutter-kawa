@@ -17,7 +17,7 @@ class LoginPage extends StatelessWidget {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: [MyCustomForm()]),
+              children: [UserForm()]),
         ));
   }
 }
