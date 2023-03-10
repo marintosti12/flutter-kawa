@@ -9,7 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:vector_math/vector_math_64.dart';
 
 class LocalAndWebObjectsView extends StatefulWidget {
-  const LocalAndWebObjectsView({Key? key}) : super(key: key);
+  const LocalAndWebObjectsView({Key? key, required this.object})
+      : super(key: key);
+  final String object;
 
   @override
   State<LocalAndWebObjectsView> createState() => _LocalAndWebObjectsViewState();
@@ -97,9 +99,10 @@ class _LocalAndWebObjectsViewState extends State<LocalAndWebObjectsView> {
       arObjectManager.removeNode(localObjectNode!);
       localObjectNode = null;
     } else {
+      String object = this.widget.object;
       var newNode = ARNode(
           type: NodeType.localGLTF2,
-          uri: "assets/Chicken_01/Chicken_01.gltf",
+          uri: "assets/models/$object.gltf",
           scale: Vector3(0.2, 0.2, 0.2),
           position: Vector3(0.0, 0.0, 0.0),
           rotation: Vector4(1.0, 0.0, 0.0, 0.0));

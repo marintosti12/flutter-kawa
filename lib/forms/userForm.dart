@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:arcore_example/services/CustomersAPI.dart';
+import "package:arcore_example/widgets/PopUp.dart";
 
 class MyCustomForm extends StatefulWidget {
   const MyCustomForm({Key? key}) : super(key: key);
@@ -39,6 +41,26 @@ class MyCustomFormState extends State<MyCustomForm> {
                 if (!value!.contains('@') || value.isEmpty) {
                   return 'Veillez rentrer un email valide';
                 }
+                CustomerAPI().createUser(value).then((bool result) {
+                  if (result) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => const PopUp(
+                        title: 'Information',
+                        message: "L'utilisateur a bien été créer",
+                      ),
+                    );
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => const PopUp(
+                        title: 'Erreur',
+                        message:
+                            "Une erreur est survenue lors de la création de l'utilisateur",
+                      ),
+                    );
+                  }
+                });
                 return null;
               },
             ),

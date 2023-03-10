@@ -1,6 +1,8 @@
 import 'package:arcore_example/models/Article.dart';
+import 'package:arcore_example/views/productView.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../views/localAndWebObjectsView.dart';
 import 'PopUp.dart';
 
 class ArticleItem extends StatelessWidget {
@@ -12,39 +14,28 @@ class ArticleItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(10),
-      child: Container(
-          decoration: BoxDecoration(
-              color: Color(0xFFF2A9D8F),
-              borderRadius: BorderRadius.all(Radius.circular(5))),
+      child: TextButton(
+          style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(Color(0xFFF2A9D8F)),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ))),
+          onPressed: () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ProductPage(
+                            title: 'eee',
+                            article: article,
+                          )),
+                )
+              },
           child: Padding(
               padding: EdgeInsets.all(10),
               child: Stack(
                 children: [
-                  Positioned(
-                    top: -10,
-                    right: -25,
-                    child: Container(
-                        alignment: Alignment.topRight,
-                        child: Center(
-                          child: TextButton.icon(
-                            onPressed: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) => PopUp(
-                                        key: key,
-                                        title: "Description",
-                                        message: article.description,
-                                      ));
-                            },
-                            icon: Icon(
-                              // <-- Icon
-                              Icons.info_rounded,
-                              color: Colors.white,
-                            ),
-                            label: Text(''), // <-- Text
-                          ),
-                        )),
-                  ),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,54 +45,69 @@ class ArticleItem extends StatelessWidget {
                           height: 100,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8.0),
-                            child: Image.network(
-                              "https://picsum.photos/200",
-                              height: 100.0,
-                              width: 200.0,
-                            ),
+                            child: article.image != null
+                                ? Image.network(
+                                    article.image!,
+                                    height: 100.0,
+                                    width: 200.0,
+                                  )
+                                : Container(
+                                    width: 200,
+                                    height: 100,
+                                    color: Colors.white,
+                                    child: Icon(
+                                      Icons.music_note,
+                                      color: Colors.black,
+                                      size: 40.0,
+                                    ),
+                                  ),
                           ),
                         ),
-                        Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.only(left: 10),
-                                child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Nom : " + article.name,
-                                          style: GoogleFonts.montserrat(
-                                              fontSize: 15)),
-                                      Container(
-                                        height: 15,
+                        Flexible(
+                            child: Padding(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Nom : " + article.name,
+                                    softWrap: false,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: GoogleFonts.montserrat(
+                                        fontSize: 15, color: Colors.white)),
+                                Container(
+                                  height: 15,
+                                ),
+                                Text("Prix : " + article.price.toString(),
+                                    overflow: TextOverflow.fade,
+                                    style: GoogleFonts.montserrat(
+                                        fontSize: 15, color: Colors.white)),
+                                Padding(
+                                    padding: EdgeInsets.only(top: 8),
+                                    child: ElevatedButton.icon(
+                                      icon: Icon(
+                                        // <-- Icon
+                                        article.model!.isNotEmpty
+                                            ? Icons.visibility
+                                            : Icons.visibility_off,
+                                        size: 24.0,
                                       ),
-                                      Text("Prix : " + article.price,
-                                          style: GoogleFonts.montserrat(
-                                              fontSize: 15)),
-                                      Padding(
-                                          padding: EdgeInsets.only(top: 8),
-                                          child: ElevatedButton.icon(
-                                            icon: Icon(
-                                              // <-- Icon
-                                              article.visibility
-                                                  ? Icons.visibility
-                                                  : Icons.visibility_off,
-                                              size: 24.0,
-                                            ),
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor:
-                                                  Color(0xFFFE76F51),
-                                              shape: const StadiumBorder(),
-                                            ),
-                                            onPressed: () {},
-                                            label: Text('Voir la modélisation'),
-                                          )),
-                                    ]),
-                              ),
-                              //Text("Description : " + article.description),
-                            ])
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Color(0xFFFE76F51),
+                                        shape: const StadiumBorder(),
+                                      ),
+                                      onPressed: () => {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  LocalAndWebObjectsView(
+                                                      object: article.model!)),
+                                        )
+                                      },
+                                      label: Text('Voir la modélisation'),
+                                    )),
+                              ]),
+                        )),
                       ]),
                 ],
               ))),
