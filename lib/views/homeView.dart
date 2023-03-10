@@ -37,16 +37,8 @@ class MyHomePage extends StatelessWidget {
                         padding: const EdgeInsets.all(16.0),
                         textStyle: GoogleFonts.montserrat(fontSize: 20)),
                     onPressed: () async {
-                      await CustomerAPI()
-                          .loginUser(
-                              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hcmludG9zdGkxMkBnbWFpbC5jb20iLCJpYXQiOjE2NzgzNjk4OTgsImV4cCI6MTY3ODM3MzQ5OH0.BsTfmHE-Eci7qSoG2_rHNQVLBtl33v4pVjk_QLOqGPc')
-                          .then((bool result) {
-                        if (result) {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  const ArticlesView(title: "ssss")));
-                        }
-                      });
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const QRViewExample()));
                     },
                     child: const Text('Scanner QR Code'),
                   ),
