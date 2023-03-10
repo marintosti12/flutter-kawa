@@ -2,6 +2,7 @@ import 'package:arcore_example/models/Article.dart';
 import 'package:arcore_example/views/productView.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../views/localAndWebObjectsView.dart';
 import 'PopUp.dart';
 
 class ArticleItem extends StatelessWidget {
@@ -94,7 +95,15 @@ class ArticleItem extends StatelessWidget {
                                         backgroundColor: Color(0xFFFE76F51),
                                         shape: const StadiumBorder(),
                                       ),
-                                      onPressed: () {},
+                                      onPressed: () => {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  LocalAndWebObjectsView(
+                                                      object: article.model!)),
+                                        )
+                                      },
                                       label: Text('Voir la modélisation'),
                                     )),
                               ]),
