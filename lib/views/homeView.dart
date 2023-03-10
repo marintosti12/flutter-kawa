@@ -1,8 +1,10 @@
 import 'package:arcore_example/views/QRCodeView.dart';
 import 'package:arcore_example/views/localAndWebObjectsView.dart';
 import 'package:arcore_example/views/loginView.dart';
+import 'package:arcore_example/views/productView.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:arcore_example/services/CustomersAPI.dart';
 
 import 'articlesView.dart';
 
@@ -34,10 +36,17 @@ class MyHomePage extends StatelessWidget {
                         backgroundColor: Colors.white,
                         padding: const EdgeInsets.all(16.0),
                         textStyle: GoogleFonts.montserrat(fontSize: 20)),
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const QRViewExample(),
-                      ));
+                    onPressed: () async {
+                      await CustomerAPI()
+                          .loginUser(
+                              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hcmludG9zdGkxMkBnbWFpbC5jb20iLCJpYXQiOjE2NzgzNjk4OTgsImV4cCI6MTY3ODM3MzQ5OH0.BsTfmHE-Eci7qSoG2_rHNQVLBtl33v4pVjk_QLOqGPc')
+                          .then((bool result) {
+                        if (result) {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  const ArticlesView(title: "ssss")));
+                        }
+                      });
                     },
                     child: const Text('Scanner QR Code'),
                   ),
@@ -54,7 +63,7 @@ class MyHomePage extends StatelessWidget {
                         textStyle: GoogleFonts.montserrat(fontSize: 20)),
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const ArticlesView(
+                        builder: (context) => const LoginPage(
                           title: 'Login Page',
                         ),
                       ));
