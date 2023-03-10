@@ -1,12 +1,13 @@
 import 'dart:convert';
 
+import '../config.dart';
 import '../models/Article.dart';
 import 'package:http/http.dart' as http;
 
 class CustomerAPI {
   Future<bool> createUser(String email) async {
     final response = await http.put(
-      Uri.parse('http://10.0.2.2:5000/customers'),
+      Uri.parse('${Config.customersApiUrl}/customers'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -22,9 +23,11 @@ class CustomerAPI {
     }
   }
 
-  Future<bool> loginUser(String token) async {
+  Future<bool> loginUser(String? token) async {
+    if (token == null) return false;
+
     final response = await http.get(
-      Uri.parse('http://10.0.2.2:5000/customers/login'),
+      Uri.parse('${Config.customersApiUrl}/customers/login'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token'

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ar_flutter_plugin/ar_flutter_plugin.dart';
 import 'package:ar_flutter_plugin/datatypes/node_types.dart';
 import 'package:ar_flutter_plugin/managers/ar_anchor_manager.dart';
@@ -6,7 +8,9 @@ import 'package:ar_flutter_plugin/managers/ar_object_manager.dart';
 import 'package:ar_flutter_plugin/managers/ar_session_manager.dart';
 import 'package:ar_flutter_plugin/models/ar_node.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:vector_math/vector_math_64.dart';
+import 'package:path_provider/path_provider.dart';
 
 class LocalAndWebObjectsView extends StatefulWidget {
   const LocalAndWebObjectsView({Key? key, required this.object})
@@ -76,11 +80,48 @@ class _LocalAndWebObjectsViewState extends State<LocalAndWebObjectsView> {
     );
   }
 
-  void onARViewCreated(
+  Future<void> copyAssetModelsToDocumentDirectory() async {
+    // CHANGE THESE TO YOUR ASSET FILES
+    List<String> filesToCopy = [
+      "assets/models/scene.gltf",
+      "assets/models/scene.bin",
+      "assets/models/texture.png"
+    ];
+
+    // This getApplicationDocumentsDirectory call comes from the path_provider package
+    final Directory docDir = await getApplicationDocumentsDirectory();
+    final String docDirPath = docDir.path;
+
+    await Future.wait(
+      filesToCopy.map((String assetPath) async {
+        // Create a new file in the documents directory with the asset file name
+        String assetFilename = assetPath.split('/').last;
+        File file = File('$docDirPath/$assetFilename');
+
+        // Load the asset file from the assets folder
+        final assetBytes = await rootBundle.load(assetPath);
+        final buffer = assetBytes.buffer;
+
+        // Write the asset file to the new file in the documents directory
+        await file.writeAsBytes(
+          buffer.asUint8List(
+            assetBytes.offsetInBytes,
+            assetBytes.lengthInBytes,
+          ),
+        );
+
+        print("Copied $assetPath to ${file.path}");
+      }),
+    );
+
+    print("Finished copying files to app's documents directory");
+  }
+
+  Future<void> onARViewCreated(
       ARSessionManager arSessionManager,
       ARObjectManager arObjectManager,
       ARAnchorManager arAnchorManager,
-      ARLocationManager arLocationManager) {
+      ARLocationManager arLocationManager) async {
     this.arSessionManager = arSessionManager;
     this.arObjectManager = arObjectManager;
 
@@ -92,6 +133,8 @@ class _LocalAndWebObjectsViewState extends State<LocalAndWebObjectsView> {
           handleTaps: false,
         );
     this.arObjectManager.onInitialize();
+
+    await copyAssetModelsToDocumentDirectory();
   }
 
   Future<void> onLocalObjectButtonPressed() async {
@@ -101,8 +144,8 @@ class _LocalAndWebObjectsViewState extends State<LocalAndWebObjectsView> {
     } else {
       String object = this.widget.object;
       var newNode = ARNode(
-          type: NodeType.localGLTF2,
-          uri: "assets/models/$object.gltf",
+          type: NodeType.fileSystemAppFolderGLTF2,
+          uri: object,
           scale: Vector3(0.2, 0.2, 0.2),
           position: Vector3(0.0, 0.0, 0.0),
           rotation: Vector4(1.0, 0.0, 0.0, 0.0));
