@@ -4,14 +4,14 @@ on:
   push:
     branches:
       - workflowsDev
-      
+
 jobs:
   test:
     name: 'Testing Flutter App'
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest]
+        os: [ubuntu-latest]
         flutter: ["2.8.1", "stable"]
     steps:
       - name: Set up Git repository
