@@ -1,11 +1,10 @@
 name: Tests sur PR de la branche dev
 
-'on':
+on:
   push:
     branches:
       - workflowsDev
-    types: [opened, reopened, synchronize]
-
+      
 jobs:
   test:
     name: 'Testing Flutter App'
