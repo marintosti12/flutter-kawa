@@ -23,10 +23,11 @@ jobs:
           java-version: '11'
 
       - name: Install dependencies
-        uses: subosito/flutter-action@v1
+        uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.0.5'
+          flutter-version: '2.8.1'
           channel: 'stable'
+          cache: true
 
       - name: Run tests
         run: flutter test
