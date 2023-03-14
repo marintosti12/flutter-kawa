@@ -41,8 +41,8 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          ref: worflowsDev
-      - name: Deploy to worflows
+          ref: workflowsDev
+      - name: Deploy to workflowsDev
         run: |
           echo "# Config"
           git config --local user.email "[hidden]"
@@ -50,13 +50,13 @@ jobs:
           echo "# Fetch all"
           git fetch --all
           echo "# Checkout/pull development"
-          git checkout worflowsDev
+          git checkout workflowsDev
           git pull
           echo "# Checkout/pull master"
-          git checkout worflows
+          git checkout workflows
           git pull
           echo "# Merge"
-          git merge worflowsDev -X theirs --allow-unrelated-histories
+          git merge workflowsDev -X theirs --allow-unrelated-histories
           echo "# Push"
           git push origin
     
@@ -68,15 +68,10 @@ jobs:
       always() && 
       (needs.test.result == 'failure')
     steps:
-      - uses: flutter-actions/setup-flutter@v2
-        with:
-          channel: stable
-          version: 3.0.2
-          cache: true
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          ref: worflowsDev
+          ref: workflowsDev
       - name: Deploy
         run: |
           echo "# Config"
@@ -86,13 +81,13 @@ jobs:
           echo "# Fetch all"
           git fetch --all
           echo "# Checkout/pull development"
-          git checkout worflowsDev
+          git checkout workflowsDev
           git pull
           git checkout -b rejected/${{ github.run_number }}
           echo "# Merge"
-          git merge worflowsDev -X theirs --allow-unrelated-histories
+          git merge workflowsDev -X theirs --allow-unrelated-histories
           git push origin rejectedTESTCI/${{ github.run_number }}
           echo "# Push"
-          git checkout worflowsDev
+          git checkout workflowsDev
           git reset --hard HEAD~1
-          git push -f origin worflowsDev
+          git push -f origin workflowsDev
