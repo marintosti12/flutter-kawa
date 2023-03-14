@@ -22,13 +22,6 @@ jobs:
           distribution: 'zulu'
           java-version: '11'
 
-      - name: Install Dart SDK
-        uses: subosito/dart-sdk-installer@v1
-        with:
-          channel: stable
-          version: '>=2.16.1 <3.0.0'
-          cache: true
-
       - name: Install dependencies
         uses: subosito/flutter-action@v2
         with:
