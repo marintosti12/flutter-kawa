@@ -12,19 +12,87 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
       - name: Setup Flutter SDK
         uses: flutter-actions/setup-flutter@v2
         with:
           channel: stable
           version: 3.0.2
           cache: true
-
       - name: Install dependencies
         run: flutter pub get
-
-      #- name: Analyze project source
-      #  run: dart analyze
-
+      - name: Analyze project source
+        run: dart analyze
       - name: Run tests
         run: flutter test
+
+  deploy-main:
+    name: 'Deploy to main'
+    runs-on: windows-latest
+    needs: [test]
+    if: |
+      always() && 
+      (needs.test.result == 'success')
+    steps:
+      - uses: flutter-actions/setup-flutter@v2
+        with:
+          channel: stable
+          version: 3.0.2
+          cache: true
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          ref: worflowsDev
+      - name: Deploy to worflows
+        run: |
+          echo "# Config"
+          git config --local user.email "[hidden]"
+          git config --local user.name "CI"
+          echo "# Fetch all"
+          git fetch --all
+          echo "# Checkout/pull development"
+          git checkout worflowsDev
+          git pull
+          echo "# Checkout/pull master"
+          git checkout worflows
+          git pull
+          echo "# Merge"
+          git merge worflowsDev -X theirs --allow-unrelated-histories
+          echo "# Push"
+          git push origin
+    
+  deploy-rejected:
+    name: 'Deploy to rejected build ${{ github.run_number }}'
+    runs-on: windows-latest
+    needs: [test]
+    if: |
+      always() && 
+      (needs.test.result == 'failure')
+    steps:
+      - uses: flutter-actions/setup-flutter@v2
+        with:
+        channel: stable
+        version: 3.0.2
+        cache: true
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          ref: worflowsDev
+      - name: Deploy
+        run: |
+          echo "# Config"
+          git config --local user.email "[hidden]"
+          git config --local user.name "CI"
+          git config --global pull.rebase true
+          echo "# Fetch all"
+          git fetch --all
+          echo "# Checkout/pull development"
+          git checkout worflowsDev
+          git pull
+          git checkout -b rejected/${{ github.run_number }}
+          echo "# Merge"
+          git merge worflowsDev -X theirs --allow-unrelated-histories
+          git push origin rejected/${{ github.run_number }}
+          echo "# Push"
+          git checkout worflowsDev
+          git reset --hard HEAD~1
+          git push -f origin worflowsDev
