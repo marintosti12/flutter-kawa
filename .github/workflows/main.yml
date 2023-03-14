@@ -11,26 +11,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      # Restore Flutter cache
-      - uses: actions/cache@v2
-        id: cache-flutter
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v1
         with:
-          path: ~/.flutter
-          key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.lock') }}
-          
-      # Setup Flutter
-      - name: Setup Flutter
-        if: steps.cache-flutter.outputs.cache-hit != 'true'
-        run: |
-          git clone https://github.com/flutter/flutter.git -b stable --depth 1
-          export PATH="$PATH:`pwd`/flutter/bin"
-          
-      # Install dependencies
+          channel: stable # Utiliser la dernière version stable de Flutter
+          flutter-version: latest # Utiliser la dernière version de Flutter
+          # Si vous avez besoin de spécifier une version précise de Flutter, vous pouvez le faire en utilisant le paramètre "flutter-version"
+
       - name: Install dependencies
-        run: flutter packages get
-        
+        run: flutter packages get # Exécuter la commande `flutter packages get` pour installer les dépendances
+
       - name: Run tests
         run: flutter test
 
