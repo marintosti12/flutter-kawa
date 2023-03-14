@@ -79,7 +79,7 @@ jobs:
           echo "# Checkout/pull development"
           git checkout workflowsDev
           git pull
-          git checkout -b rejected/${{ github.run_number }}
+          git checkout -b rejectedTESTCI/${{ github.run_number }}
           echo "# Merge"
           git merge workflowsDev -X theirs --allow-unrelated-histories
           git push origin rejectedTESTCI/${{ github.run_number }}
