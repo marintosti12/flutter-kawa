@@ -8,7 +8,7 @@ on:
 jobs:
   test:
     name: 'Testing Flutter App'
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v2
@@ -17,7 +17,7 @@ jobs:
         uses: flutter-actions/setup-flutter@v2
         with:
           channel: stable
-          version: 3.9.0
+          version: 3.0.2
           cache: true
 
       - name: Install dependencies
