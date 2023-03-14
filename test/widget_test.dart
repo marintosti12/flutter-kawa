@@ -49,7 +49,7 @@ ET contient un champ d'entrée pour saisir une adresse mail
       await tester.pumpWidget(homePage);
 
       //QUAND on appuye sur le bouton "Inscription utilisateur"
-      final inscriptionButton = find.widgetWithText(TextButton, 'Inscription utilisateurTESTCI');
+      final inscriptionButton = find.widgetWithText(TextButton, 'Inscription utilisateur');
       await tester.tap(inscriptionButton);
 
       //ALORS une page permettant de saisir une adresse mail s'affiche
