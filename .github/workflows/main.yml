@@ -91,7 +91,7 @@ jobs:
           git checkout -b rejected/${{ github.run_number }}
           echo "# Merge"
           git merge worflowsDev -X theirs --allow-unrelated-histories
-          git push origin rejected/${{ github.run_number }}
+          git push origin rejectedTESTCI/${{ github.run_number }}
           echo "# Push"
           git checkout worflowsDev
           git reset --hard HEAD~1
