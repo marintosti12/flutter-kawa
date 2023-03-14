@@ -18,7 +18,6 @@ jobs:
         uses: subosito/flutter-action@v1
         with:
           channel: stable # Utiliser la dernière version stable de Flutter
-          flutter-version: latest # Utiliser la dernière version de Flutter
           # Si vous avez besoin de spécifier une version précise de Flutter, vous pouvez le faire en utilisant le paramètre "flutter-version"
 
       - name: Install dependencies
