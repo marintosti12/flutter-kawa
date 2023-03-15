@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:arcore_example/services/CustomersAPI.dart';
+import 'package:arcore_example/views/articlesView.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -148,6 +150,13 @@ class _QRViewExampleState extends State<QRViewExample> {
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         result = scanData;
+
+        CustomerAPI().loginUser(result?.code).then((bool result) {
+          if (result) {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const ArticlesView(title: "View")));
+          }
+        });
       });
     });
   }
