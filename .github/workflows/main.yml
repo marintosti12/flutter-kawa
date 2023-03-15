@@ -1,34 +1,31 @@
-name: Tests and Deploy
-'on':
+name: Tests sur PR de la branche dev
+
+on:
   push:
     branches:
       - dev
 
 jobs:
   test:
-    name: 'Testing'
-    runs-on: windows-latest
-    strategy:
-      matrix:
-        node:
-          - 16
-    steps:
-      - uses: subosito/flutter-action@v1
-        with:
-          channel: 'beta'
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          ref: dev
+    name: 'Testing Flutter App'
+    runs-on: ubuntu-latest
 
-      - name: Run All Flutter Tests
-      - run: |
-           flutter config --enable-windows-desktop
-           flutter test -d windows
-        env:
-         CI: true
-          
-          
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v1
+        with:
+          channel: stable # Utiliser la dernière version stable de Flutter
+          # Si vous avez besoin de spécifier une version précise de Flutter, vous pouvez le faire en utilisant le paramètre "flutter-version"
+
+      - name: Install dependencies
+        run: flutter packages get # Exécuter la commande `flutter packages get` pour installer les dépendances
+
+      - name: Run tests
+        run: flutter test
+        
   deploy-main:
     name: 'Deploy to main'
     runs-on: ubuntu-latest
@@ -36,14 +33,7 @@ jobs:
     if: |
       always() && 
       (needs.test.result == 'success')
-    strategy:
-      matrix:
-        node:
-          - 16
     steps:
-      - uses: actions/setup-node@v1
-        with:
-          node-version: '${{ matrix.node }}'
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -58,15 +48,13 @@ jobs:
           echo "# Checkout/pull development"
           git checkout dev
           git pull
-          echo "# Checkout/pull master"
+          echo "# Checkout/pull main"
           git checkout main
           git pull
           echo "# Merge"
           git merge dev -X theirs --allow-unrelated-histories
           echo "# Push"
           git push origin
-          
-          
           
   deploy-rejected:
     name: 'Deploy to rejected build ${{ github.run_number }}'
@@ -75,19 +63,12 @@ jobs:
     if: |
       always() && 
       (needs.test.result == 'failure')
-    strategy:
-      matrix:
-        node:
-          - 16
     steps:
-      - uses: actions/setup-node@v1
-        with:
-          node-version: '${{ matrix.node }}'
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
           ref: dev
-      - name: Deploy
+      - name: Deploy to rejected/no_build
         run: |
           echo "# Config"
           git config --local user.email "[hidden]"
@@ -106,5 +87,3 @@ jobs:
           git checkout dev
           git reset --hard HEAD~1
           git push -f origin dev
-          
-    

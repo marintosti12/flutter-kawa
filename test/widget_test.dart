@@ -1,10 +1,3 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility that Flutter provides. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:arcore_example/views/homeView.dart';
 import 'package:arcore_example/services/ArticleAPI.dart';
 import 'package:arcore_example/views/articlesView.dart';
@@ -63,8 +56,36 @@ ET contient un champ d'entrée pour saisir une adresse mail
       await tester.pumpAndSettle();
 
       //ET contient un champ d'entrée pour saisir une adresse mail
-      expect(find.widgetWithText(TextFormField, 'Email utilisateur'),
-          findsOneWidget);
+      expect(find.widgetWithText(TextFormField, 'Email utilisateur'), findsOneWidget);
+    });
+
+    testWidgets('''
+ETANT DONNEE l'application mobile "Paye ton kawa"
+ET la page "Liste de produits"
+QUAND on appuye sur le bouton "I" (Informations) sur le 1er élément de la liste
+ALORS une pop up contenant la description du produit s'affiche
+''', (WidgetTester tester) async {
+      //ETANT DONNEE l'application mobile "Paye ton kawa"
+      //ET la page "Liste de produits"
+      /*final mockApi = MockArticlesAPI();
+      await tester.pumpWidget(MaterialApp(
+          home: ArticlesView(
+              title: 'Test Liste des articles'//,
+              /*articles: mockApi.fetchArticles()*/)));
+      await tester.pumpAndSettle();
+      expect(find.byType(ListView), findsOneWidget);
+      expect(find.byType(ArticleItem), findsWidgets);
+
+      //QUAND on appuye sur le bouton "I" (Informations) sur le 1er élément de la liste
+      final machineACafe = find.byType(ArticleItem).first;
+      final informationsButton = find.byIcon(Icons.info_rounded).first;
+      await tester.tap(informationsButton);
+      await tester.pumpAndSettle();
+
+      //ALORS une pop up contenant la description du produit s'affiche
+      expect(find.byType(PopUp), findsOneWidget);
+      expect(
+          find.text(mockApi.machineACafeExample.description), findsOneWidget);*/
     });
   });
 }
