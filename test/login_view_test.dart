@@ -1,6 +1,7 @@
 import 'package:arcore_example/views/homeView.dart';
 import 'package:arcore_example/services/ArticleAPI.dart';
 import 'package:arcore_example/views/articlesView.dart';
+import 'package:arcore_example/views/loginView.dart';
 import 'package:arcore_example/widgets/ArticleItem.dart';
 import 'package:arcore_example/widgets/PopUp.dart';
 import 'package:flutter/material.dart';
@@ -11,32 +12,27 @@ import 'package:arcore_example/main.dart';
 import 'mock/MockArticlesAPI.dart';
 
 void main() {
-  group("Page Inscription utilisateur", () {
 
     testWidgets('''
-ETANT DONNEE l'application mobile "Paye ton kawa"
-ET la page d'accueil
-QUAND on appuye sur le bouton "Inscription utilisateur"
-ALORS une page permettant de saisir une adresse mail s'affiche
-ET contient un champ d'entrée pour saisir une adresse mail
+ETANT DONNEE l'application mobile "Paye ton kawa" 
+ET la page "Inscription utilisateur" 
+QUAND on saisie une adresse mail invalide 
+ALORS un texte d'erreur s'affiche
 ''', (WidgetTester tester) async {
       //ETANT DONNEE l'application mobile "Paye ton kawa"
-      //ET la page d'accueil
-      final homePage = MaterialApp(
-        home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      //ET la page "Inscription" 
+      final loginPage = MaterialApp(
+        home: const LoginPage(title: "Inscription utilisateur"),
       );
-      await tester.pumpWidget(homePage);
+      await tester.pumpWidget(loginPage);
 
-      //QUAND on appuye sur le bouton "Inscription utilisateur"
-      final inscriptionButton =
-          find.widgetWithText(TextButton, 'Inscription utilisateur');
-      await tester.tap(inscriptionButton);
-
-      //ALORS une page permettant de saisir une adresse mail s'affiche
-      await tester.pumpAndSettle();
-
-      //ET contient un champ d'entrée pour saisir une adresse mail
-      expect(find.widgetWithText(TextFormField, 'Email utilisateur'), findsOneWidget);
+      //QUAND on saisie une adresse mail invalide 
+      final emailField = find.widgetWithText(TextFormField, 'Email utilisateur');
+      expect(emailField, findsOneWidget);
+      await tester.enterText(emailField, 'testgmail.com');
+      await tester.tap(find.text('Création utilisateur'));
+      await tester.pumpWidget(loginPage);
+      //ALORS un texte d'erreur s'affiche
+      expect(find.text('Veuillez rentrer un email valide'), findsOneWidget);
     });
-  });
 }
