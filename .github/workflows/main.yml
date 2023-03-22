@@ -84,7 +84,8 @@ jobs:
     needs: [build-ios, build-android, test]
     if: |
       always() && 
-      (needs.test.result == 'success')
+      (needs.test.result == 'success' &&
+       needs.build-android.result == 'success' && needs.build-ios.result == 'success')
     steps:
       - uses: actions/checkout@v2
         with:
@@ -114,7 +115,8 @@ jobs:
     needs: [build-ios, build-android, test]
     if: |
       always() && 
-      (needs.test.result == 'failure')
+      (needs.test.result == 'failure' ||
+       needs.build-android.result == 'failure' || needs.build-ios.result == 'failure')
     steps:
       - uses: actions/checkout@v2
         with:
