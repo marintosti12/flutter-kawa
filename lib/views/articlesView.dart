@@ -1,24 +1,20 @@
-import 'package:arcore_example/views/QRCodeView.dart';
-import 'package:arcore_example/views/localAndWebObjectsView.dart';
-import 'package:arcore_example/views/loginView.dart';
 import 'package:arcore_example/widgets/ArticleItem.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../models/Article.dart';
-import '../services/ArticleAPI.dart';
 
 class ArticlesView extends StatelessWidget {
   final String title;
+  final Future<List<Article>> articles;
 
-  const ArticlesView({required this.title, Key? key}) : super(key: key);
+  const ArticlesView({required this.title, required this.articles, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xFFF264653),
+        backgroundColor: const Color(0xFFF264653),
         body: FutureBuilder(
-          future: ArticleAPI().fetchArticles(),
+          future: articles,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               final articleList = snapshot.data as List<Article>;
@@ -31,7 +27,7 @@ class ArticlesView extends StatelessWidget {
               // handle error here
               return Text('${snapshot.error}');
             } else {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               ); // displays while loading data
             }

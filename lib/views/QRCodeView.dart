@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:arcore_example/services/ArticleAPI.dart';
 import 'package:arcore_example/services/CustomersAPI.dart';
 import 'package:arcore_example/views/articlesView.dart';
 import 'package:flutter/foundation.dart';
@@ -154,13 +155,13 @@ class _QRViewExampleState extends State<QRViewExample> {
         CustomerAPI().loginUser(result?.code).then((bool result) {
           if (result) {
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const ArticlesView(title: "View")));
+                builder: (context) => ArticlesView(title: "View", articles: ArticleAPI().fetchArticles())));
           }
         });
       });
     });
   }
-
+  
   void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
     log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
     if (!p) {

@@ -39,7 +39,7 @@ class UserFormState extends State<UserForm> {
               ),
               validator: (value) {
                 if (!value!.contains('@') || value.isEmpty) {
-                  return 'Veillez rentrer un email valide';
+                  return 'Veuillez rentrer un email valide';
                 }
                 CustomerAPI().createUser(value).then((bool result) {
                   if (result) {

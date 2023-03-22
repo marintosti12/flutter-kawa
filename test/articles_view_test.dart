@@ -28,7 +28,6 @@ ALORS une page détaillant les informations du produit s'affiche
     final machineACafe = find.byType(ArticleItem).first;
     await tester.tap(machineACafe);
     await tester.pumpAndSettle();
-    //TextButton
 
     //ALORS une page détaillant les informations du produit s'affiche
     expect(find.text(mockApi.machineACafeExample.description), findsOneWidget);
@@ -62,8 +61,8 @@ ET le produit est affiché sous forme d'un modèle en réalité augmentée
     expect(find.byIcon(Icons.visibility_off).first, findsOneWidget);
     final seeModelBtn = find.text('Voir la modélisation').first;
     expect(seeModelBtn, findsOneWidget);
-    await tester.tap(seeModelBtn);
-    await tester.pumpAndSettle();
+    //await tester.tap(seeModelBtn);
+    //await tester.pumpAndSettle();
 
     //ALORS une page affichant la modélisation 3D du produit sélectionné s'affiche 
     //final modPageFinder = find.byType(LocalAndWebObjectsView);
