@@ -7,9 +7,13 @@ import '../config.dart';
 class ArticleAPI {
   Future<List<Article>> fetchArticles() async {
     List<Article> articles;
-
+    
     final response =
-        await http.get(Uri.parse('${Config.productsApiUrl}/products'));
+        await http.get(Uri.parse('${Config.productsApiUrl}/products'), 
+        headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${Config.token}'
+      });
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,

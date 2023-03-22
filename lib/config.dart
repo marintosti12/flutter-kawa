@@ -1,4 +1,5 @@
 class Config {
-  static String productsApiUrl = "http://192.168.1.23:5001";
-  static String customersApiUrl = "http://192.168.1.23:5000";
+  static String productsApiUrl = "https://api-kawa.herokuapp.com";
+  static String customersApiUrl = "https://api-kawa-customer.herokuapp.com";
+  static String? token;
 }

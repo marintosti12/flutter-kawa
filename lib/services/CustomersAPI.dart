@@ -35,6 +35,7 @@ class CustomerAPI {
     );
 
     if (response.statusCode == 200) {
+      Config.token = token;
       return true;
     } else {
       return false;
