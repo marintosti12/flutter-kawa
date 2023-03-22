@@ -11,7 +11,7 @@ class MockArticlesAPI implements IArticleAPI {
         stock: 20,
         createdAt: "09/03/2023",
         image: null, 
-        model: null);
+        model: "");
 
   final Article _cafeExample = const Article(
         name: "Café",
@@ -22,7 +22,7 @@ class MockArticlesAPI implements IArticleAPI {
         stock: 10000,
         createdAt: "10/03/2023",
         image: null, 
-        model: null);
+        model: "");
 
   @override
   Future<List<Article>> fetchArticles() async {
