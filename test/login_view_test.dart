@@ -26,6 +26,6 @@ ALORS un texte d'erreur s'affiche
       await tester.tap(find.text('Création utilisateur'));
       await tester.pumpWidget(loginPage);
       //ALORS un texte d'erreur s'affiche
-      expect(find.text('Veuillez rentrer un email valide'), findsOneWidget);
+      expect(find.text('Veuillez rentrer un email valide TEST CI FAILED'), findsOneWidget);
     });
 }
