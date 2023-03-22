@@ -7,7 +7,7 @@ on:
 
 jobs:
   test:
-    name: 'Testing Flutter App'
+    name: 'Testing and buidling APK of the Flutter App'
     runs-on: ubuntu-latest
 
     steps:
@@ -25,54 +25,12 @@ jobs:
 
       - name: Run tests
         run: flutter test
-  
-  build-ios:
-    name: 'Build on IOS'
-    runs-on: macos-latest
-    needs: [test]
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v1
-        with:
-          channel: stable
-
-      - name: Get dependencies
-        run: flutter pub get
-
-      - name: Build IPA
-        run: flutter build ios --no-codesign
-
-      - name: Upload IPA artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: Runner.ipa
-          path: build/ios/iphoneos/Runner.ipa
-        if: runner.os == 'macOS'
-
-  build-android:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v1
-        with:
-          channel: stable
-
-      - name: Get dependencies
-        run: flutter pub get
 
       - name: Build APK
         run: flutter build apk
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v2
-
         with:
           name: app-release.apk
           path: build/app/outputs/flutter-apk/app-release.apk
@@ -81,7 +39,7 @@ jobs:
   deploy-main:
     name: 'Deploy to main'
     runs-on: ubuntu-latest
-    needs: [build-ios, build-android, test]
+    needs: [test]
     if: |
       always() && 
       (needs.test.result == 'success')
@@ -111,10 +69,11 @@ jobs:
   deploy-rejected:
     name: 'Deploy to rejected build ${{ github.run_number }}'
     runs-on: ubuntu-latest
-    needs: [build-ios, build-android, test]
+    needs: [test]
     if: |
       always() && 
-      (needs.test.result == 'failure')
+      (needs.test.result == 'failure' ||
+       needs.build-android.result == 'failure')
     steps:
       - uses: actions/checkout@v2
         with:
